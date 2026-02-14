@@ -19,9 +19,7 @@ reverse-proxy-1 exited with code 1
 ```
 
 ### chmod
-Similary when using chmod on the reverse proxy [nginx.conf](reverse-proxy/nginx.conf) we get the following error when starting the containers.
-
-For this example we will be using the following command for demonstration:
+When using chmod on the reverse proxy [nginx.conf](reverse-proxy/nginx.conf) we can change the permissions. For this example we will be using the following command:
 ```bash
 sudo chmod 000 reverse-proxy/nginx.conf
 ```
