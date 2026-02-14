@@ -1,0 +1,30 @@
+networks:
+  edge-router:
+    internal: false
+  internal:
+    internal: true
+
+
+services:
+  reverse-proxy:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - edge-router
+      - internal
+    volumes:
+      - "./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro"
+
+  webserver:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    volumes:
+      - "./webserver/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./webserver/index.html:/usr/share/nginx/html/index.html:ro"
