@@ -38,4 +38,4 @@ jobs:
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
       - name: Run Playbook
-        run: ansible-playbook ./runbooks/deploy-intermediate.yml -i inventory
+        run: ansible-playbook ./playbooks/deploy-intermediate.yml -i inventory
