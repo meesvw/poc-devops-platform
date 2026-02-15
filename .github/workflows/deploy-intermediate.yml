@@ -7,13 +7,14 @@ on:
     #   - main
     paths:
       - 2-intermediate/**
+      - ./github/workflows/deploy-intermediate.yml
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      
+
       - name: Install Ansible
         run: |
           sudo apt-get update
