@@ -28,7 +28,7 @@ jobs:
 
       - name: Create inventory file
         run: |
-          cat > inventory <<'EOF'
+          cat > inventory <<EOF
           [targets]
           ${SSH_HOST} ansible_user=${SSH_USER} ansible_password=${SSH_PASSWORD}
           EOF
