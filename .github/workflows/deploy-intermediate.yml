@@ -37,4 +37,7 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
 
       - name: Run Playbook
-        run: ansible-playbook ./playbooks/deploy-intermediate.yml -i inventory --extra-vars "ansible_password=${SSH_PASSWORD}"
+        run: |
+          ansible-playbook ./playbooks/deploy-intermediate.yml -i inventory --extra-vars "ansible_password=${SSH_PASSWORD}"
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
