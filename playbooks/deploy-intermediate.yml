@@ -10,3 +10,19 @@
       src: ../2-intermediate/
       dest: "{{ destination_folder }}"
     register: task_result
+
+  - name: stop-containers-and-remove-images
+    community.docker.docker_compose_v2:
+      project_src: "{{ destination_folder }}"
+      remove_orphans: true
+      remove_volumes: true
+      remove_images: local
+      state: absent
+    when: task_result.changed
+
+  - name: start-containers-and-build-images
+    community.docker.docker_compose_v2:
+      project_src: "{{ destination_folder }}"
+      state: present
+      build: policy
+    when: task_result.changed
