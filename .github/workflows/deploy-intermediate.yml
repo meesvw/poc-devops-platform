@@ -9,6 +9,9 @@ on:
       - 2-intermediate/**
       - .github/workflows/deploy-intermediate.yml
 
+env:
+  ANSIBLE_HOST_KEY_CHECKING: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,4 +24,18 @@ jobs:
           sudo apt-get install -y ansible
 
       - name: Check Ansible
-        run: ansible -v
+        run: ansible --version
+
+      - name: Create inventory file
+        run: |
+          cat > inventory <<'EOF'
+          [targets]
+          ${SSH_HOST} ansible_user=${SSH_USER} ansible_password=${SSH_PASSWORD}
+          EOF
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+      - name: Run Playbook
+        run: ansible-playbook ./runbooks/deploy-intermediate.yml -i inventory
