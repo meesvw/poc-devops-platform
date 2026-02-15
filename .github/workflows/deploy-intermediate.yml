@@ -7,7 +7,7 @@ on:
     #   - main
     paths:
       - 2-intermediate/**
-      - ./github/workflows/deploy-intermediate.yml
+      - .github/workflows/deploy-intermediate.yml
 
 jobs:
   deploy:
