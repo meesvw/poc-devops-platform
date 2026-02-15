@@ -2,14 +2,13 @@
 - name: deploy-intermediate
   hosts: all
   vars:
-    destination_folder: "{{ ansible_env.HOME }}/2-intermediate"
+    destination_folder: "~/2-intermediate"
 
   tasks:
   - name: copy-intermediate-folder-contents
     ansible.builtin.copy:
       src: ../2-intermediate/
       dest: "{{ destination_folder }}/"
-      mode: preserve
     register: task_result
 
   - name: check-if-docker-compose-is-valid
