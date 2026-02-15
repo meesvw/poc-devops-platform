@@ -8,6 +8,7 @@ on:
     paths:
       - 2-intermediate/**
       - .github/workflows/deploy-intermediate.yml
+      - playbooks/deploy-intermediate
 
 env:
   ANSIBLE_HOST_KEY_CHECKING: false
