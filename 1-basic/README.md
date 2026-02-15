@@ -69,7 +69,7 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 Here we can see our webserver has two ports exposed `80/tcp, 443/tcp`, but it is not bound to our host as we can see on the ports of our reverse proxy `0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp`.
 
 ### ip a
-This is cool but the IPs are assigned dynamically to the containers so using the `ip a` command we can actually see what IP they have locally (Your logging will look bigger, but due to this being public I have removed identifying information).
+This is cool but the IPs are assigned dynamically to the containers so using the `ip a` command we can actually see what IP they have locally (Your output will look bigger, but due to this being public I have removed identifying information).
 ```shell
 /1-basic$ ip a
 
@@ -82,10 +82,13 @@ This is cool but the IPs are assigned dynamically to the containers so using the
 
 3: br-XXXX: <BROADCAST,MULTICAST,UP> mtu 1500
     inet 172.18.0.1/16 scope global br-XXXX
+
+4: br-XXXX: <BROADCAST,MULTICAST,UP> mtu 1500
+    inet 172.19.0.1/16 scope global br-XXXX
 ```
 
 ### docker network / ping
-The above is cool and all, but we still do not know what IPs our containers have specifically so to find those we can do the following. First we get the automatically created networks from docker compose (we could also pre create them, but that is out of scope for this example)
+The `ip a` command shows us the subnet for our containers, but it does not show the specific IPs our containers have. To find those we can do the following. First we get the automatically created networks from docker compose when we bring up our [docker-compose.yml](docker-compose.yml) file. (we could also pre create the networks to make them persistent)
 ```shell
 /1-basic$ sudo docker network list
 NETWORK ID     NAME                  DRIVER    SCOPE
@@ -219,13 +222,13 @@ PING reverse-proxy (172.18.0.3): 56 data bytes
 round-trip min/avg/max = 0.076/0.129/0.164 ms
 ```
 
-And voila connectivity from our webserver to our reverse-proxy. Since our webserver is in a Docker network with the internal flag enabled. It shouldn't be able to ping for example to Cloudflares dns.
+And voila connectivity from our webserver to our reverse-proxy. Since our webserver is in a Docker network with the internal flag enabled. It shouldn't be able to ping to services outside of the local Docker network. When we ping the Cloudflares dns for example.
 ```shell
 /1-basic$ sudo docker compose exec webserver ping 1.1.1.1
 PING 1.1.1.1 (1.1.1.1): 56 data bytes
 ping: sendto: Network unreachable
 ```
-And indeed it does not work. However our reverse proxy should be able to connect to the outside world.
+We can see it does not work. However when we try the same from our reverse proxy we are able to ping to the Cloudflare DNS, since the reverse proxy is added to the `edge-router` network.
 ```shell
 /1-basic$ sudo docker compose exec reverse-proxy ping 1.1.1.1
 PING 1.1.1.1 (1.1.1.1): 56 data bytes
@@ -240,7 +243,7 @@ round-trip min/avg/max = 3.144/3.982/5.731 ms
 ```
 
 ### Confirmation
-So after all these tests lets confirm that our reverse proxy headers have come with the request.
+So after all these tests lets confirm that our request to the webserver passes through the reverse proxy by checking the headers we added in the [nginx.conf](reverse-proxy/nginx.conf) config file.
 ```shell
 /1-basic$ curl -i localhost
 HTTP/1.1 200 OK

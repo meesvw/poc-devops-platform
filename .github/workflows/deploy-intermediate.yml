@@ -1,0 +1,15 @@
+name: deploy-intermediate
+run-name: Checking & deploying intermediate
+
+on:
+  push:
+    # branches:
+    #   - main
+    paths:
+      - 2-intermediate/**
+
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
