@@ -32,6 +32,7 @@ jobs:
 
       - name: Check nginx config files
         run: |
+          ls # for debugging
           nginx -t -c 3-expert/reverse-proxy/nginx.conf
           nginx -t -c 3-expert/webserver/nginx.conf
 
