@@ -2,12 +2,13 @@
 - name: deploy-intermediate
   hosts: all
   vars:
+    source_folder: "../2-intermediate/"
     destination_folder: "~/2-intermediate"
 
   tasks:
   - name: copy-intermediate-folder-contents
     ansible.builtin.copy:
-      src: ../2-intermediate/
+      src: "{{ source_folder }}"
       dest: "{{ destination_folder }}/"
     register: task_result
 

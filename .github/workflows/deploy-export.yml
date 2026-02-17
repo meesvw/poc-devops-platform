@@ -1,0 +1,47 @@
+name: deploy-expert
+run-name: Checking & deploying expert
+
+on:
+  push:
+    # branches:
+    #   - main
+    paths:
+      - 3-expert/**
+      - .github/workflows/deploy-expert.yml
+      - playbooks/deploy-expert.yml
+
+env:
+  ANSIBLE_HOST_KEY_CHECKING: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install required packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Check Ansible
+        run: ansible --version
+      
+      - name: Check Nginx
+        run: nginx -v
+
+      - name: Create inventory file
+        run: |
+          cat > inventory <<EOF
+          [targets]
+          ${SSH_HOST} ansible_user=${SSH_USER}
+          EOF
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+
+      - name: Run Playbook
+        run: |
+          ansible-playbook ./playbooks/deploy-expert.yml -i inventory --extra-vars "ansible_password=${SSH_PASSWORD}"
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}

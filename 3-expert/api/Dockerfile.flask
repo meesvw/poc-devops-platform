@@ -1,0 +1,23 @@
+FROM alpine:3.23
+
+# Install updates
+RUN apk update
+
+# Install required packages
+RUN apk add --no-cache python3 py3-pip py3-virtualenv curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements
+COPY ./requirements.txt /app
+
+# Install requirements in virtual environment to prevent PEP668
+RUN python3 -m venv /venv
+RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# Expose port 5000 of the container image
+EXPOSE 5000
+
+# Set image start command
+CMD ["/venv/bin/python", "main.py"]

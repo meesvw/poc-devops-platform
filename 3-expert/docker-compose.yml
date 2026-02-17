@@ -10,9 +10,10 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.nginx
+    restart: unless-stopped
     ports:
-      - ${REVERSE_PROXY_HTTP_PORT}:8080  # To separate the intermediate from expert we changed the connected port
-      - ${REVERSE_PROXY_HTTPS_PORT}:8443 # To separate the intermediate from expert we changed the connected port
+      - ${REVERSE_PROXY_HTTP_PORT}:80  
+      - ${REVERSE_PROXY_HTTPS_PORT}:443
     networks:
       - edge-router
       - internal
@@ -23,6 +24,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.nginx
+    restart: unless-stopped
     networks:
       - internal
     volumes:
@@ -39,6 +41,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.flask
+    restart: unless-stopped
     networks:
       - edge-router
       - internal
