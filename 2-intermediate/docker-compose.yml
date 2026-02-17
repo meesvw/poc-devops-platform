@@ -11,8 +11,8 @@ services:
       context: ./
       dockerfile: Dockerfile.nginx
     ports:
-      - ${REVERSE_PROXY_HTTP_PORT}:8080  # To separate the intermediate from expert we changed the connected port
-      - ${REVERSE_PROXY_HTTPS_PORT}:8443 # To separate the intermediate from expert we changed the connected port
+      - 8080:${REVERSE_PROXY_HTTP_PORT}  # To separate the intermediate from expert we changed the connected port
+      - 8443:${REVERSE_PROXY_HTTPS_PORT} # To separate the intermediate from expert we changed the connected port
     networks:
       - edge-router
       - internal
