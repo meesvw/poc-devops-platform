@@ -6,7 +6,7 @@
     destination_folder: "~/3-expert"
 
   tasks:
-  - name: copy-intermediate-folder-contents
+  - name: copy-expert-folder-contents
     ansible.builtin.copy:
       src: "{{ source_folder }}"
       dest: "{{ destination_folder }}/"
