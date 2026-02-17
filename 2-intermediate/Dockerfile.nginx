@@ -4,7 +4,7 @@ FROM alpine:3.23
 RUN apk update
 
 # Install required packages
-RUN apk add --no-cache nginx
+RUN apk add --no-cache nginx curl
 
 # Create rootless user and group
 RUN addgroup -S rootless-nginx-group && adduser -S rootless-nginx -G rootless-nginx-group
