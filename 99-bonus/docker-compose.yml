@@ -1,0 +1,41 @@
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+      - backend
+
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    environment:
+      - PORT=5000
+    networks:
+      - default
+
+
+networks:
+  app-network:
+    driver: bridge
+  default:
+
+
+#############################
+# What I fixed in this file #
+#############################
+# 1. Made indentation atleast 2 instead of 1 for readability
+# 2. Added some whitespace
+# 3. Under networks -> app-network -> driver was indented wrongly
+# 4. Services where indented wrongly so ports etc where not put correctly
+# 5. Added `default` network which was missing under the `networks`
+# 6. Removed version since this is no longer used in the latest version of Docker
+# 

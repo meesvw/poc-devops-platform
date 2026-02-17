@@ -34,8 +34,9 @@ jobs:
         run: |
           ls # for debugging
           pwd # also for debugging
-          nginx -t -c ~/3-expert/reverse-proxy/nginx.conf
-          nginx -t -c ~/3-expert/webserver/nginx.conf
+          echo "$GITHUB_WORKSPACE" # More debugging yes!
+          nginx -t -c $GITHUB_WORKSPACE/3-expert/reverse-proxy/nginx.conf
+          nginx -t -c $GITHUB_WORKSPACE/3-expert/webserver/nginx.conf
 
       - name: Create inventory file
         run: |
