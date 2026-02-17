@@ -30,6 +30,11 @@ jobs:
       - name: Check Nginx
         run: nginx -v
 
+      - name: Check nginx config files
+        run: |
+          nginx -t -c 3-expert/reverse-proxy/nginx.conf
+          nginx -t -c 3-expert/webserver/nginx.conf
+
       - name: Create inventory file
         run: |
           cat > inventory <<EOF
