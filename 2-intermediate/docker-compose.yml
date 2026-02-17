@@ -29,7 +29,7 @@ services:
       - "./webserver/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./webserver/index.html:/usr/share/nginx/html/index.html:ro"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
       interval: 5s
       timeout: 1s
       retries: 3
