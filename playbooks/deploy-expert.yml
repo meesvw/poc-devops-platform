@@ -36,5 +36,5 @@
       build: policy
       scale:
         webserver: 4
-        reverse-proxy: 4
+        api: 4
     when: task_result.changed
