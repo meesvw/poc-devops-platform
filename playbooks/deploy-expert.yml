@@ -34,5 +34,7 @@
       project_src: "{{ destination_folder }}"
       state: present
       build: policy
-      command_options: "--scale webserver=2 --scale api=2"
+      scale:
+        webserver: 4
+        reverse-proxy: 4
     when: task_result.changed
