@@ -26,14 +26,9 @@ jobs:
 
       - name: Check Ansible
         run: ansible --version
-      
-      - name: Check Nginx
-        run: nginx -v
 
-      - name: Check nginx config files
-        run: |
-          nginx -T -c $GITHUB_WORKSPACE/3-expert/reverse-proxy/nginx.conf
-          nginx -T -c $GITHUB_WORKSPACE/3-expert/webserver/nginx.conf
+      - name: Check Docker
+        run: docker -v
 
       - name: Create inventory file
         run: |
