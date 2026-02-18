@@ -1,0 +1,36 @@
+---
+- name: deploy-bonus
+  hosts: all
+  vars:
+    source_folder: "../99-bonus/"
+    destination_folder: "~/99-bonus"
+
+  tasks:
+  - name: copy-bonus-folder-contents
+    ansible.builtin.copy:
+      src: "{{ source_folder }}"
+      dest: "{{ destination_folder }}/"
+    register: task_result
+
+  - name: check-if-docker-compose-is-valid
+    ansible.builtin.command:
+      cmd: docker compose config
+      chdir: "{{ destination_folder }}"
+    register: compose_check
+    changed_when: false
+    when: task_result.changed
+
+  - name: stop-containers-and-remove-images
+    community.docker.docker_compose_v2:
+      project_src: "{{ destination_folder }}"
+      remove_orphans: true
+      remove_volumes: true
+      remove_images: local
+      state: absent
+    when: task_result.changed
+
+  - name: start-containers-if-not-up-and-build-images
+    community.docker.docker_compose_v2:
+      project_src: "{{ destination_folder }}"
+      state: present
+      build: policy
