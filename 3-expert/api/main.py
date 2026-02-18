@@ -16,7 +16,7 @@ if str(os.environ.get("FLASK_REVERSE_PROXY", "false")).lower() == "true":
 
 
 # Functions
-@app.route("/")
+@app.route("/api") # I did not use / since we pass the /api directly to the Flask application
 def index():
     environment = os.environ.get("FLASK_ENV", "development")
     if environment == "production":
