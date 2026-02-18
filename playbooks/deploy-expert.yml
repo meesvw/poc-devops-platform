@@ -12,7 +12,7 @@
       dest: "{{ destination_folder }}/"
     register: task_result
 
-  # Here we check and create the certificates stuff
+  # Here we check and create the certificates
   - name: create-certificates-folder-if-not-exists
     ansible.builtin.file:
       path: "{{ destination_folder }}/certificates"
@@ -49,7 +49,28 @@
       path: "{{ destination_folder }}/certificates/privkey.pem"
       mode: "0644"
 
-  # Here we check and create our docker stuff
+  # Here we create our Docker images
+  - name: build-docker-alpine-nginx-image
+    community.docker.docker_image:
+      name: alpine-nginx-local
+      tag: latest
+      source: build
+      build:
+        path: "{{ destination_folder }}"
+        dockerfile: Dockerfile.nginx
+    force_source: true
+  
+  - name: build-docker-alpine-flask-image
+    community.docker.docker_image:
+      name: alpine-flask-local
+      tag: latest
+      source: build
+      build:
+        path: "{{ destination_folder }}/api"
+        dockerfile: Dockerfile.flask
+    force_source: true
+
+  # Here we check and create our Docker compose
   - name: check-if-docker-compose-is-valid
     ansible.builtin.command:
       cmd: docker compose config
