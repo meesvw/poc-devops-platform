@@ -24,10 +24,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ansible
 
-      - name: Check Ansible
+      - name: Check Ansible version
         run: ansible --version
 
-      - name: Check Docker
+      - name: Check Docker version
         run: docker -v
 
       # Until I can fix this disabled to test other parts

@@ -21,7 +21,7 @@ services:
       - "./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./certificates/fullchain.pem:/etc/nginx/fullchain.pem:ro"
       - "./certificates/privkey.pem:/etc/nginx/privkey.pem:ro"
-    environments:
+    environment:
       REVERSE_PROXY_HOSTNAME: ${REVERSE_PROXY_HOSTNAME}
 
   webserver:
