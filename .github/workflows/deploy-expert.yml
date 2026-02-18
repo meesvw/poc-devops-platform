@@ -36,8 +36,13 @@ jobs:
           ls ./3-expert # Some debugging
           docker build -t temp-alpine-nginx:test -f ./3-expert/Dockerfile.nginx ./3-expert # $GITHUB_WORKSPACE/3-expert/Dockerfile.nginx -f $GITHUB_WORKSPACE/3-expert/reverse-proxy/Dockerfile $GITHUB_WORKSPACE/3-expert/reverse-proxy
 
-      - name: Check Nginx config
-        run: docker run --rm --add-host webserver:127.0.0.1 --add-host api:127.0.0.1 temp-alpine-nginx:test nginx -t
+      - name: Check reverse-proxy Nginx config
+        run: docker run --rm \
+          --add-host webserver:127.0.0.1 \
+          --add-host api:127.0.0.1 \
+          temp-alpine-nginx:test \
+          -v ./3-expert/reverse-proxy/nginx.conf \
+          nginx -t
 
       # This part runs the Ansible tasks
       - name: Create Ansible inventory file
