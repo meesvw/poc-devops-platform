@@ -40,8 +40,8 @@ jobs:
         run: |
           openssl req -x509 -nodes -days 30 \
             -newkey rsa:4096 \
-            -keyout /etc/privkey.pem \
-            -out /etc/fullchain.pem \
+            -keyout $(pwd)/privkey.pem \
+            -out $(pwd)/fullchain.pem \
             -subj "/CN=example.com" \
             -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
 
@@ -51,8 +51,8 @@ jobs:
           --add-host webserver:127.0.0.1 \
           --add-host api:127.0.0.1 \
           -v $(pwd)/3-expert/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro \
-          -v /etc/privkey.pem:/etc/nginx/fullchain.pem:ro \
-          -v /etc/privkey.pem:/etc/nginx/privkey.pem:ro \
+          -v $(pwd)/fullchain.pem:/etc/nginx/fullchain.pem:ro \
+          -v $(pwd)/privkey.pem:/etc/nginx/privkey.pem:ro \
           temp-alpine-nginx:test \
           nginx -t
 
