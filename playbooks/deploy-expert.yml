@@ -58,7 +58,7 @@
       build:
         path: "{{ destination_folder }}"
         dockerfile: Dockerfile.nginx
-    force_source: true
+      force_source: true
   
   - name: build-docker-alpine-flask-image
     community.docker.docker_image:
@@ -68,7 +68,7 @@
       build:
         path: "{{ destination_folder }}/api"
         dockerfile: Dockerfile.flask
-    force_source: true
+      force_source: true
 
   # Here we check and create our Docker compose
   - name: check-if-docker-compose-is-valid
