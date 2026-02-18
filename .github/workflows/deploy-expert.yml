@@ -36,12 +36,23 @@ jobs:
           ls ./3-expert # Some debugging
           docker build -t temp-alpine-nginx:test -f ./3-expert/Dockerfile.nginx ./3-expert # $GITHUB_WORKSPACE/3-expert/Dockerfile.nginx -f $GITHUB_WORKSPACE/3-expert/reverse-proxy/Dockerfile $GITHUB_WORKSPACE/3-expert/reverse-proxy
 
+      - name: Create temporary self signed certificates
+        run: |
+          openssl req -x509 -nodes -days 30
+          -newkey rsa:4096
+          -keyout /etc/privkey.pem
+          -out /etc/fullchain.pem
+          -subj "/CN=example.com"
+          -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
+
       - name: Check reverse-proxy Nginx config
         run: |
           docker run --rm \
           --add-host webserver:127.0.0.1 \
           --add-host api:127.0.0.1 \
           -v $(pwd)/3-expert/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro \
+          -v /etc/privkey.pem:/etc/nginx/fullchain.pem:ro \
+          -v /etc/privkey.pem:/etc/nginx/privkey.pem:ro \
           temp-alpine-nginx:test \
           nginx -t
 
