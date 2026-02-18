@@ -19,6 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Check Docker version
+        run: docker -v
+
       # This part is to check the nginx config files
       - name: Build temporary nginx image
         run: |
@@ -68,9 +71,6 @@ jobs:
 
       - name: Check Ansible version
         run: ansible --version
-
-      - name: Check Docker version
-        run: docker -v
 
       # This part runs the Ansible tasks
       - name: Create Ansible inventory file
