@@ -29,9 +29,8 @@
       state: absent
     when: task_result.changed
 
-  - name: start-containers-and-build-images
+  - name: start-containers-if-not-up-and-build-images
     community.docker.docker_compose_v2:
       project_src: "{{ destination_folder }}"
       state: present
       build: policy
-    when: task_result.changed
