@@ -12,20 +12,22 @@
       dest: "{{ destination_folder }}/"
     register: task_result
 
-  - name: check-if-docker-compose-is-valid
-    ansible.builtin.command:
-      cmd: docker compose config
-      chdir: "{{ destination_folder }}"
-    register: compose_check
-    changed_when: false
-    when: task_result.changed
-
+  # Here we check and create the certificates stuff
   - name: create-certificates-folder-if-not-exists
     ansible.builtin.file:
       path: "{{ destination_folder }}/certificates"
       state: directory
       mode: "0755"
-    when: task_result.changed
+
+  - name: check-if-fullchain-exists
+    ansible.builtin.stat:
+      path: "{{ destination_folder }}/certificates/fullchain.pem"
+    register: fullchain_file
+
+  - name: check-if-privkey-exists
+    ansible.builtin.stat:
+      path: "{{ destination_folder }}/certificates/privkey.pem"
+    register: privkey_file
 
   - name: generate-self-signed-certificates
     ansible.builtin.command: >
@@ -35,8 +37,15 @@
       -out {{ destination_folder }}/certificates/fullchain.pem
       -subj "/CN={{ ssh_host }}"
       -addext "subjectAltName=DNS:{{ ssh_host }},DNS:www.{{ ssh_host }}"
-    args:
-      creates: "{{ destination_folder }}/certificates/fullchain.pem"
+    when: not fullchain_file.exists or not privkey_file.exists
+
+  # Here we check and create our docker stuff
+  - name: check-if-docker-compose-is-valid
+    ansible.builtin.command:
+      cmd: docker compose config
+      chdir: "{{ destination_folder }}"
+    register: compose_check
+    changed_when: false
     when: task_result.changed
 
   - name: stop-containers-and-remove-images
