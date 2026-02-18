@@ -24,7 +24,7 @@
     ansible.builtin.file:
       path: "{{ destination_folder }}/certificates"
       state: directory
-      mode: "0644"
+      mode: "0755"
     when: task_result.changed
 
   - name: generate-self-signed-certificates
