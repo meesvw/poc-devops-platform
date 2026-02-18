@@ -45,7 +45,7 @@ jobs:
             -subj "/CN=example.com" \
             -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
 
-      - name: Change permissions of self signed certificates
+      - name: Change permissions of the self signed certificates
         run: chmod 755 $(pwd)/privkey.pem $(pwd)/fullchain.pem
 
       - name: Check Nginx reverse-proxy config
