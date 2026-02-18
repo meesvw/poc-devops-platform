@@ -16,7 +16,7 @@ RUN chown -R rootless-nginx:rootless-nginx-group /var/lib/nginx /var/log/nginx /
 USER rootless-nginx
 
 # Expose port 80 of the container image
-EXPOSE 80 443
+EXPOSE 80
 
 # Set image start command
 CMD ["nginx", "-g", "daemon off;"]

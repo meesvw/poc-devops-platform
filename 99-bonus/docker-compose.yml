@@ -10,8 +10,6 @@ services:
 
   web:
     build: ./web
-    ports:
-      - "80:8080"
     networks:
       - backend
 
@@ -42,5 +40,6 @@ networks:
 # 7. Removed version since this is no longer used in the latest version of Docker
 # 8. Replaced `app-network` with `web` under the `networks` tab
 # 9. Put service web into `backend` network
-# 10. Flipped the ports of the web service to connect 80 to host and 8080 to container
+# 10. Renamed `nginx` service to `reverse-proxy` to better reflect purpose
+# 11. Remove ports from the web so that the reverse proxy can handle traffic
 #
