@@ -37,7 +37,7 @@ jobs:
       # - name: Check Nginx config
       #   run: docker run --rm --add-host webserver:127.0.0.1 --add-host api:127.0.0.1 temp-alpine-nginx:test nginx -t
 
-      - name: Create inventory file
+      - name: Create Ansible inventory file
         run: |
           cat > inventory <<EOF
           [targets]

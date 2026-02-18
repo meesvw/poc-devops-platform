@@ -27,7 +27,7 @@ jobs:
       - name: Check Ansible version
         run: ansible --version
 
-      - name: Create inventory file
+      - name: Create Ansible inventory file
         run: |
           cat > inventory <<EOF
           [targets]
