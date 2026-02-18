@@ -33,8 +33,8 @@ jobs:
       # Until I can fix this disabled to test other parts
       - name: Build temporary nginx image
         run: |
-          ls # Some debugging
-          docker build -t temp-alpine-nginx:test . # $GITHUB_WORKSPACE/3-expert/Dockerfile.nginx -f $GITHUB_WORKSPACE/3-expert/reverse-proxy/Dockerfile $GITHUB_WORKSPACE/3-expert/reverse-proxy
+          ls ./3-expert # Some debugging
+          docker build -t temp-alpine-nginx:test ./3-expert/Dockerfile.nginx # $GITHUB_WORKSPACE/3-expert/Dockerfile.nginx -f $GITHUB_WORKSPACE/3-expert/reverse-proxy/Dockerfile $GITHUB_WORKSPACE/3-expert/reverse-proxy
 
       # - name: Check Nginx config
       #   run: docker run --rm --add-host webserver:127.0.0.1 --add-host api:127.0.0.1 temp-alpine-nginx:test nginx -t
