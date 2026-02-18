@@ -38,12 +38,12 @@ jobs:
 
       - name: Create temporary self signed certificates
         run: |
-          openssl req -x509 -nodes -days 30
-          -newkey rsa:4096
-          -keyout /etc/privkey.pem
-          -out /etc/fullchain.pem
-          -subj "/CN=example.com"
-          -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
+          openssl req -x509 -nodes -days 30 \
+            -newkey rsa:4096 \
+            -keyout /etc/privkey.pem \
+            -out /etc/fullchain.pem \
+            -subj "/CN=example.com" \
+            -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
 
       - name: Check reverse-proxy Nginx config
         run: |
