@@ -37,7 +37,7 @@
       -out {{ destination_folder }}/certificates/fullchain.pem
       -subj "/CN={{ ssh_host }}"
       -addext "subjectAltName=DNS:{{ ssh_host }},DNS:www.{{ ssh_host }}"
-    when: not fullchain_file.exists or not privkey_file.exists
+    when: not fullchain_file.stat.exists or not privkey_file.stat.exists
 
   # Here we check and create our docker stuff
   - name: check-if-docker-compose-is-valid
