@@ -49,6 +49,7 @@ jobs:
 
       - name: Run Playbook
         run: |
-          ansible-playbook ./playbooks/deploy-expert.yml -i inventory --extra-vars "ansible_password=${SSH_PASSWORD}"
+          ansible-playbook ./playbooks/deploy-expert.yml -i inventory --extra-vars "ansible_password=${SSH_PASSWORD} ssh_host=${SSH_HOST}"
         env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}

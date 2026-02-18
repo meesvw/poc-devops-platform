@@ -20,6 +20,25 @@
     changed_when: false
     when: task_result.changed
 
+  - name: create-certificates-folder-if-not-exists
+    ansible.builtin.file:
+      path: "{{ destination_folder }}/certificates"
+      state: directory
+      mode: "0644"
+    when: task_result.changed
+
+  - name: generate-self-signed-certificates
+    ansible.builtin.command: >
+      openssl req -x509 -nodes -days 90
+      -newkey rsa:4096
+      -keyout {{ destination_folder }}/certificates/privkey.pem
+      -out {{ destination_folder }}/certificates/fullchain.pem
+      -subj "/CN={{ ssh_host }}"
+      -addext "subjectAltName=DNS:{{ ssh_host }},DNS:www.{{ ssh_host }}"
+    args:
+      creates: "{{ destination_folder }}/certificates/fullchain.pem"
+    when: task_result.changed
+
   - name: stop-containers-and-remove-images
     community.docker.docker_compose_v2:
       project_src: "{{ destination_folder }}"
