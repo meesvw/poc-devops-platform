@@ -47,7 +47,7 @@
   - name: set-permissions-on-privkey
     ansible.builtin.file:
       path: "{{ destination_folder }}/certificates/privkey.pem"
-      mode: "0644"
+      mode: "0755"
 
   # Here we check and create our docker stuff
   - name: check-if-docker-compose-is-valid
