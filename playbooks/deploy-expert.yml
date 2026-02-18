@@ -39,6 +39,16 @@
       -addext "subjectAltName=DNS:{{ ssh_host }},DNS:www.{{ ssh_host }}"
     when: not fullchain_file.stat.exists or not privkey_file.stat.exists
 
+  - name: set-permissions-on-fullchain
+    ansible.builtin.file:
+      path: "{{ destination_folder }}/certificates/fullchain.pem"
+      mode: "0644"
+
+  - name: set-permissions-on-privkey
+    ansible.builtin.file:
+      path: "{{ destination_folder }}/certificates/privkey.pem"
+      mode: "0644"
+
   # Here we check and create our docker stuff
   - name: check-if-docker-compose-is-valid
     ansible.builtin.command:
