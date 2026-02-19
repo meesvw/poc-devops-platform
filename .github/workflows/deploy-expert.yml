@@ -22,9 +22,6 @@ jobs:
       - name: Check Docker version
         run: docker -v
 
-      - name: Testing
-        run: echo "This is a test!"
-
       # This part is to check the nginx config files
       - name: Build temporary nginx image
         run: |
